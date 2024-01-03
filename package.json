@@ -14,7 +14,7 @@
   },
   "scripts": {
     "dev": "tsc --watch",
-    "build": "rm -rf dist/ && tsc",
+    "build": "rm -rf dist/ && tsc"
   },
   "peerDependencies": {
     "react": "18.x.x",
@@ -61,9 +61,9 @@
     "dist/",
     "types.d.ts"
   ],
-
   "repository": {
     "type": "git",
     "url": "git+https://github.com/platformbuilders/vike-builders.git"
-  },  "license": "MIT"
+  },  
+  "license": "MIT"
 }
