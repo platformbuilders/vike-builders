@@ -1,6 +1,6 @@
 {
   "name": "vike-builders",
-  "version": "0.3.8",
+  "version": "0.0.1",
   "type": "module",
   "main": "./dist/renderer/+config.js",
   "types": "./dist/renderer/+config.d.ts",
