@@ -3,19 +3,35 @@ import { ServerStyleSheet } from 'styled-components'
 import { dangerouslySkipEscape, escapeInject } from 'vike/server'
 import type { OnRenderHtmlAsync } from 'vike/types'
 import { PageShell } from './getPageElement.js'
+import { getTitle } from './getTitle.js'
+import { PageContextProvider } from './PageContextProvider.js'
 import React from 'react'
 
 const onRenderHtml: OnRenderHtmlAsync = async (pageContext): ReturnType<OnRenderHtmlAsync> => {
+  const { description, favicon } = pageContext.config
+  const faviconTag = !favicon ? '' : escapeInject`<link rel="icon" href="${favicon}" />`
+  const descriptionTag = !description ? '' : escapeInject`<meta name="description" content="${description}" />`
+
+  const title = getTitle(pageContext)
+  const titleTag = !title ? '' : escapeInject`<title>${title}</title>`
+
+  const Head = pageContext.config.Head || (() => <></>)
+  const head = (
+    <PageContextProvider pageContext={pageContext}>
+      <Head />
+    </PageContextProvider>
+  )
+
+  const headHtml = dangerouslySkipEscape(ReactDOMServer.renderToString(head))
+
   const sheet = new ServerStyleSheet()
   let pageHtml
-  let test = 't'
   if (!pageContext.Page) {
     // SPA
     pageHtml = ''
   } else {
     // SSR / HTML-only
     const { Page, data } = pageContext
-    test = 'passou aqui'
     pageHtml = ReactDOMServer.renderToString(
       sheet.collectStyles(
         <PageShell pageContext={pageContext}>
@@ -25,22 +41,21 @@ const onRenderHtml: OnRenderHtmlAsync = async (pageContext): ReturnType<OnRender
     )
   }
   // See https://vike.dev/head
-  const title = String(pageContext.exports.title) || 'Vite SSR app'
   const desc = String(pageContext.exports.description) || 'App using Vite + Vike'
 
   const documentHtml = escapeInject`<!DOCTYPE html>
     <html lang="pt-br">
       <head>
         <meta charset="UTF-8" />
+        ${faviconTag}
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <meta name="description" content="${desc}" />
-        <title>${title}</title>
+        ${titleTag}
+        ${descriptionTag}
+        ${headHtml}
         ${dangerouslySkipEscape(sheet.getStyleTags())}
       </head>
       
       <body>
-      <div>${test}</div>
-
         <div id="page-view">${dangerouslySkipEscape(pageHtml)}</div>
       </body>
     </html>`

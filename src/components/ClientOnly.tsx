@@ -1,42 +1,17 @@
-export { ClientOnly }
+import React from 'react'
+import { FC, ReactElement, ReactNode, useEffect, useState } from 'react'
 
-import React, { lazy, useEffect, useState, startTransition } from 'react'
-import type { ComponentType, ReactNode } from 'react'
-
-function ClientOnly<T>({
-  load,
-  children,
-  fallback,
-  deps = []
-}: {
-  load: () => Promise<{ default: React.ComponentType<T> } | React.ComponentType<T>>
-  children: (Component: React.ComponentType<T>) => ReactNode
-  fallback: ReactNode
-  deps?: Parameters<typeof useEffect>[1]
-}) {
-  const [Component, setComponent] = useState<ComponentType<unknown> | null>(null)
+type Props = {
+  children: ReactNode
+}
+export const ClientOnly: FC<Props> = ({ children }): ReactElement<any, any> | null => {
+  const [hasMounted, setHasMounted] = useState(false)
 
   useEffect(() => {
-    const loadComponent = () => {
-      const Component = lazy(() =>
-        load()
-          .then((LoadedComponent) => {
-            return {
-              default: () => children('default' in LoadedComponent ? LoadedComponent.default : LoadedComponent)
-            }
-          })
-          .catch((error) => {
-            console.error('Component loading failed:', error)
-            return { default: () => <p>Error loading component.</p> }
-          })
-      )
-      setComponent(Component)
-    }
+    setHasMounted(true)
+  }, [])
 
-    startTransition(() => {
-      loadComponent()
-    })
-  }, deps)
+  if (!hasMounted) return null
 
-  return Component ? <Component /> : fallback
+  return <>{children}</>
 }

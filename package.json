@@ -49,6 +49,9 @@
       "useData": [
         "./dist/components/useData.d.ts"
       ],
+      "ClientOnly": [
+        "./dist/components/ClientOnly.d.js"
+      ],
       "renderer/onRenderHtml": [
         "./dist/renderer/onRenderHtml.d.ts"
       ],

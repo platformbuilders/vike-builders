@@ -20,8 +20,8 @@ const toggleSsrRelatedConfig: ConfigEffect = ({ configDefinedAt, configValue }) 
 }
 
 export default {
-  onRenderHtml: 'import:vike-builders/renderer/onRenderHtml:onRenderHtml',
-  onRenderClient: 'import:vike-builders/renderer/onRenderClient:onRenderClient',
+  onRenderHtml: 'import:@platformbuilders/vike-builders/renderer/onRenderHtml:onRenderHtml',
+  onRenderClient: 'import:@platformbuilders/vike-builders/renderer/onRenderClient:onRenderClient',
   passToClient: ['pageProps', 'title'],
   clientRouting: false,
   hydrationCanBeAborted: true,
@@ -37,9 +37,6 @@ export default {
     },
     description: {
       env: { server: true }
-    },
-    theme: {
-      env: { server: true , client: true}
     },
     favicon: {
       env: { server: true }
@@ -83,8 +80,6 @@ declare global {
        *
        */
       lang?: string
-
-      theme?: any
       /**
        * If true, render mode is SSR or pre-rendering (aka SSG). In other words, the
        * page's HTML will be rendered at build-time or request-time.
