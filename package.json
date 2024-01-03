@@ -1,6 +1,6 @@
 {
-  "name": "vike-builders",
-  "version": "0.0.1",
+  "name": "@platformbuilders/vike-builders",
+  "version": "0.0.2",
   "type": "module",
   "main": "./dist/renderer/+config.js",
   "types": "./dist/renderer/+config.d.ts",
@@ -15,8 +15,6 @@
   "scripts": {
     "dev": "tsc --watch",
     "build": "rm -rf dist/ && tsc",
-    "release": "release-me --git-prefix vike-react --changelog-dir packages/vike-react/ patch",
-    "release:commit": "release-me --git-prefix vike-react --changelog-dir packages/vike-react/ commit"
   },
   "peerDependencies": {
     "react": "18.x.x",
@@ -63,6 +61,9 @@
     "dist/",
     "types.d.ts"
   ],
-  "repository": "github:vikejs/vike-react",
-  "license": "MIT"
+
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/platformbuilders/vike-builders.git"
+  },  "license": "MIT"
 }
